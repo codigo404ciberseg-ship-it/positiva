@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Fundación Positiva</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <style>
+    body {
+      background-image: url(02.png);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed; /* EFECTO MODERNO */
+      background-repeat: no-repeat;
+    }
+
+    header {
+      background: rgba(0,0,0,0.4); /* NEGRO SEMI TRANSPARENTE */
+      backdrop-filter: blur(5px); /* EFECTO MODERNO */
+      color: rgb(255, 2, 2);
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+
+    header p {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+
+    .header {
+      background: transparent;
+      padding: 0px 0px;
+    }
+
+    .header-contenido {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .logo {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+    }
+
+    nav {
+      background: white;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background: #4facfe;
+      color: white;
+    }
+
+    nav a.activo {
+      background: #4facfe;
+      color: white;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: flex;
+      align-items: center; /* Clave */
+    }
+
+    .dropdown > a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 40px;
+      background: white;
+      min-width: 200px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+      color: #333;
+    }
+
+    .dropdown-content a:hover {
+      background: #4facfe;
+      color: white;
+    }
+
+    /* Mostrar menú al pasar mouse */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .marquesina {
+      background: #2222228f;
+      color: white;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 10px 0;
+    }
+
+    .marquesina-contenido {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll 40s linear infinite;
+    }
+
+    .marquesina span {
+      margin: 0 40px;
+      font-weight: bold;
+    }
+
+    /* Animación */
+    @keyframes scroll {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-100%);
+      }
+    }
+
+    .hero {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .hero h2 {
+      background: #33333374;
+      font-size: 40px;
+      color: #45fb03;
+    }
+
+    .hero p {
+      background:#33333374 ;
+      font-size: 25px;
+      max-width: 960px;
+      margin: auto;
+      color: #87f903;
+    }
+
+    .botones {
+      margin-top: 30px;
+    }
+
+    .botones a {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 25px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn-mapa {
+      background: #4facfe;
+      color: white;
+    }
+
+    .btn-admin {
+      background: #333;
+      color: white;
+    }
+
+    .botones a:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    .seccion {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .seccion h3 {
+      background: #33333374;
+      font-size: 40px;
+      color: #87f903;
+    }
+
+    .seccion p {
+      background:#33333374 ;
+      font-size: 25px;
+      max-width: 960px;
+      margin: auto;
+      color: #87f903;
+    }
+
+    .cards {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .card h3 {
+      color: #333333;
+      margin-bottom: 20px;
+    }
+
+    .cards-contenedor {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .card-item {
+      background: white;
+      padding: 20px;
+      width: 250px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(67, 199, 5, 0.683);
+      transition: 0.3s;
+    }
+
+    .card-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-item h4 {
+      margin-bottom: 10px;
+      color: #4facfe;
+    }
+
+    .card-item p {
+      color: #6e0b0b;
+    }
+
+    .titulo-seccion {
+      background: #222222c2;
+      font-size: 28px;
+      color: white;
+      margin: 40px 0 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Línea decorativa debajo del título */
+    .titulo-seccion::after {
+      content: "";
+      width: 80px;
+      height: 4px;
+      background: #4facfe;
+      display: block;
+      margin: 10px auto 0;
+      border-radius: 5px;
+    }
+
+    .youtube {
+      background: #e4dfdf8e;
+      font-size: 25px;
+      text-align: center;
+      padding: 20px 30px;
+    }
+
+    .youtube h3 {
+      color: #f60707;
+      margin-bottom: 50px;
+    }
+
+    footer {
+      background: #222222c2;
+      color: white;
+      text-align: center;
+      padding: 2px;
+      margin-top: 40px;
+    }
+
+    .link-politica {
+      display: inline-block;
+      background: #222222c2;
+      color: #45fb03;
+      padding: 10px 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .link-politica:hover {
+      background: #00c6;
+    }
+
+    #btnSubir {
+      backdrop-filter: blur(5px);
+      background: rgba(79, 172, 254, 0.7);
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #6e0b0b;
+      color: white;
+      border: none;
+      padding: 12px 15px;
+      font-size: 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none; /* OCULTO AL INICIO */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    #btnSubir:hover {
+      background: #007bff;
+      transform: scale(1.1);
+    }
+
+    /* CONTENEDOR GENERAL */
+    .red-apoyo {
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    /* TÍTULO */
+    .titulo-red {
+      background: #222222c2;
+      font-size: 32px;
+      color: white;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    /* LÍNEA DECORATIVA */
+    .titulo-red::after {
+      content: "";
+      width: 80px;
+      height: 4px;
+      background: #4facfe;
+      display: block;
+      margin: 10px auto;
+      border-radius: 5px;
+    }
+    /* SUBTÍTULO */
+    .subtitulo-red {
+      background: #222222c2;
+      color: #ccc;
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    /* CONTENEDOR */
+    .marquesina-img {
+      overflow: hidden;
+      position: relative;
+      background: rgba(0,0,0,0.6);
+      padding: 20px 0;
+    }
+
+    /* TRACK (movimiento) */
+    .marquesina-track {
+      display: flex;
+      width: calc(200%); /* Clave para infinito */
+      animation: scrollInfinito 15s linear infinite;
+    }
+
+    /* ITEMS */
+    .marquesina-track a {
+      display: flex;
+    }
+
+    /* IMÁGENES */
+    .marquesina-track img {
+      height: 80px;
+      margin: 0 40px;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    /* HOVER */
+    .marquesina-track img:hover {
+      transform: scale(1.2);
+    }
+
+    .marquesina-track:hover {
+      animation-play-state: paused;
+    }
+
+    /* ANIMACIÓN */
+    @keyframes scrollInfinito {
+      0% {
+        transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  #cookieBanner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 97%;
+    background: rgba(0,0,0,0.9);
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    z-index: 9999;
+  }
+
+  #cookieBanner p {
+    margin: 0;
+    font-size: 14px;    
+  }
+
+  #cookieBanner a {
+    color: #4facfe;
+    text-decoration: underline;
+  }
+
+  #cookieBanner button {
+    background: #4facfe;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+  }
+
+  #cookieBanner button:hover {
+    background: #00c6ff;
+  }
+
+  #fireworks {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* no bloquea clicks */
+    z-index: 999;
+  }
+  </style>
+</head>
+
+<body>
+
+<header class="header">
+  <div class="header-contenido">
+
+    <!-- Logo Izquierdo -->
+    <img src="Fundación Positiva.png" alt="Logo Izquierdo" class="logo">
+
+    <!-- Texto -->
+    <div class="titulo">
+      <h1>Fundación Positiva</h1>
+      <p>Conectando personas y pensamientos a lo largo del país.</p>
+    </div>
+
+    <!-- Logo Derecho -->
+    <img src="Accion Solidaria.png" alt="Logo Derecho" class="logo">
+  </div>
+  <button onclick="leerTexto()">🔊 Escuchar contenido</button>
+  <button onclick="detenerLectura()">⛔ Detener</button>
+</header>
+
+<nav>
+  <a href="index.html" class="activo">Inicio</a>
+  <a href="MapaInteractivo.html">Mapa</a>
+
+  <div class="dropdown">
+    <a href="#">Sitios de Interés ▾</a>
+
+    <div class="dropdown-content">
+      <a href="https://www.chileatiende.gob.cl/temas/discapacidad" target="_blank">ChileAtiende Discapacidad</a>
+      <a href="https://www.senadis.gob.cl/" target="_blank">SENADIS</a>
+      <a href="https://fchd.cl/" target="_blank">Fundación Chilena para la Discapacidad</a>
+      <a href="https://coanil.cl/" target="_blank">COANIL</a>
+      <a href="https://fundacionluz.cl/" target="_blank">Fundación Luz</a>
+      <a href="https://fundacioneres.cl/" target="_blank">Fundación Eres</a>
+      <a href="https://sff.sofofa.cl/centros-sofofa/centro-discapacidad" target="_blank">SOFOFA Centro Discapacidad</a>
+      <a href="https://www.descubreme.cl" target="_blank">Fundación Descubreme</a>
+      <a href="https://fundacionpar.cl/" target="_blank">Fundación PAR</a>
+      <a href="https://fundacionfenixchile.cl/" target="_blank">Fundación Fénix Chile</a>
+      <a href="https://especial.mineduc.cl/" target="_blank">Educación Especial</a>
+      <a href="https://mistalentos.cl/" target="_blank">Fundación mis Talentos</a>
+      <a href="https://www.defensorianinez.cl" target="_blank">Defensoría de la Niñez</a>
+      <a href="https://www.senadis.gob.cl/pag/602/1593/organizaciones" target="_blank">Base Datos organizaciones</a>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <a href="#">Capacitación Gratis ▾</a>
+
+    <div class="dropdown-content">
+      <a href="https://academia.senadis.cl/" target="_blank">Academia SENADIS</a>
+      <a href="https://sence.gob.cl/" target="_blank">SENCE</a>
+      <a href="https://edutin.com/curso-de-discapacidad" target="_blank">Edutin Academy</a>
+      <a href="https://cursando.cl/" target="_blank">Cursando</a>
+      <a href="https://www.santanderopenacademy.com/pt_br/index.html" target="_blank">Academia Santander</a>
+    </div>
+  </div>
+  <a href="Testimonios.html">Testimonios</a>
+
+  <a href="PanelAdmin.html">Administración</a>
+</nav>
+
+<section class="marquesina">
+  <div class="marquesina-contenido">
+    <span><strong>Inclusión: </strong>"La verdadera inclusión es cuando la diversidad es celebrada, no solo tolerada" (Verna Myers).</span>
+  </div>
+</section>
+
+<section class="hero">
+  <h2>Visualiza nuestra presencia en todo Chile</h2>
+  <p>
+    Esta plataforma permite identificar y ubicar a las personas que forman parte de nuestra red,
+    fortaleciendo el trabajo territorial y la colaboración entre comunidades.
+  </p>
+</section>
+
+<section class="seccion">
+  <h3>¿Qué hacemos?</h3>
+  <p>
+    Somos una organización que busca fortalecer la conexión entre personas, comunidades
+    y territorios, promoviendo el desarrollo local y la participación activa a lo largo de Chile.
+  </p>
+</section>
+
+<section class="seccion">
+  <h3>¿Cómo funciona?</h3>
+  <p>
+    A través de este sistema, se pueden registrar personas y ubicarlas geográficamente,
+    permitiendo visualizar la distribución territorial y facilitar la coordinación de acciones.
+  </p>
+</section>
+
+<section class="cards">
+  <h2 class="titulo-seccion">Datos Impactantes</h2>
+
+  <div class="cards-contenedor">
+    <div class="card-item">
+      <h4>Una de cada seis Personas en el mundo vive con Discapacidad</h4>
+      <p>lo que representa el 16% de la población mundial</p>
+    </div>
+
+    <div class="card-item">
+      <h4>En Chile, hay más de 3.2 millones de Personas con Discapacidad</h4>
+      <p>lo que equivale al 17.6% de la población adulta</p>
+    </div>
+
+    <div class="card-item">
+      <h4>El 80% de las Personas con Discapacidad</h4>
+      <p>vive en países en desarrollo</p>
+    </div>
+
+    <div class="card-item">
+      <h4>Las Personas con Discapacidad</h4>
+      <p>tienen 4 veces más posibilidades de ser víctimas de violencia que las Personas sin Discapacidad</p>
+    </div>
+  </div>
+</section>
+
+    <section class="cards">
+      <h2 class="titulo-seccion">Hitos y Logros</h2>
+
+      <div class="cards-contenedor">
+        <div class="card-item">
+          <h4>La Convención sobre los Derechos de las Personas con Discapacidad (CDPD)</h4>
+          <p>fue aprobada en 2006 y ratificada por Chile en 2008</p>
+        </div>
+
+        <div class="card-item">
+          <h4>La Ley 20.422, promulgada en 2010</h4>
+          <p>establece normas sobre igualdad de oportunidades e inclusión social de personas con discapacidad en Chile</p>
+        </div>
+
+        <div class="card-item">
+          <h4>En 2022, se celebró el Día Internacional de las Personas con Discapacidad con el lema:</h4>
+          <p>"Fomentar sociedades inclusivas para impulsar el progreso social"</p>
+        </div>
+      </div>
+    </section>
+
+        <div class="cards">
+          <h2 class="titulo-seccion">Creatividad Social e Inclusión</h2>
+
+          <div class="cards-contenedor">
+            <div class="card-item">
+              <h4>La inclusión social es:</h4>
+              <p>un derecho fundamental reconocido por la CDPD</p>
+            </div>
+
+            <div class="card-item">
+              <h4>La creatividad social es:</h4>
+              <p>clave para impulsar la inclusión y el progreso social</p>
+            </div>
+
+            <div class="card-item">
+              <h4>La educación inclusiva es:</h4>
+              <p>fundamental para garantizar la igualdad de oportunidades para las personas con discapacidad</p>
+            </div>
+      </div>
+    </section>
+  
+
+<section class="seccion">
+  <h3>Té Virtual de las 5 - Conversatorio</h3>
+  <p>
+    Para estar al día de nuestra labor te invitamos a ver nuestras ediciones en youtube
+    en el siguiente enlace:
+  </p>
+</section>
+<section class="youtube">
+  <div class="video-container">
+    <a href="https://www.youtube.com/@AcciónSolidaria-g3k/streams" target="_blank">
+      Ver Canal de Acción Solidaria en youtube
+    </a>    
+  </div>
+</section>
+</section>
+
+<section class="red-apoyo">
+  <h2 class="titulo-red">Nuestra Red de Apoyo</h2>
+  <p class="subtitulo-red">Haz clic en las imagenes para saber más</p>
+
+<section class="marquesina-img">
+  <div class="marquesina-track">
+
+    <!-- Bloque Original -->
+    <a href="https://accionsolidaria.cl/"><img src="Accion Solidaria.png"></a>
+    <a href="https://www.hogardecristo.cl/"><img src="logoHdc.png"></a>
+    <a href="https://web.facebook.com/esfineam?locale=es_LA"><img src="Estrella de América.jpg"></a>
+    <a href="https://codigo404cs.netlify.app/"><img src="Logo C404CS.jpg"></a>
+    
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 <strong>Fundación Positiva</strong> | Organización sin fines de lucro</p>
+  <p>Creado por <strong>© Código 404</strong></p>
+  <p id="contadorVisitas"></p>
+</footer>
+
+<script>
+  let hablando = false;
+
+  function leerTexto() {
+    if(hablando) return; // evita que se superponga
+
+    const texto = document.body.innerText;
+
+    const speech = new SpeechSynthesisUtterance(texto);
+    speech.lang = "es-CL"; // español Chile
+
+    hablando = true;
+
+    speech.onend = () => {
+      hablando = false;
+    };
+
+    window.speechSynthesis.speak(speech);
+  }
+
+  function detenerLectura() {
+    window.speechSynthesis.cancel(); // 🔴 detiene TODO
+    hablando = false;
+  }
+</script>
+
+<script>
+  // Mostrar botón al hacer scroll
+  window.onscroll = function() {
+    let boton = document.getElementById("btnSubir");
+
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+      boton.style.display = "block";
+    } else {
+      boton.style.display = "none";
+    }
+  };
+
+  // Subir Suavemente
+  function subirArriba() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+</script>
+<button id="btnSubir" onclick="subirArriba()">⬆</button>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const banner = document.getElementById("cookieBanner");
+    const btn = document.getElementById("aceptarCookies");
+
+  // Verificar si ya aceptó
+  if (localStorage.getItem("cookiesAceptadas")) {
+    banner.style.display = "none";
+  }
+
+  // Botón Aceptar
+  btn.addEventListener("click", () => {
+    localStorage.setItem("cookiesAceptadas", "true");
+    banner.style.display = "none";
+  });
+  });
+</script>
+
+<div id="cookieBanner">
+  <p>
+    Este sitio utiliza cookies y almacenamiento local para mejorar la experiencia del usuario.
+    Al continuar navegando, aceptas nuestra
+    <a href="Política de Privacidad.html">Política de Privacidad</a>.
+  </p>
+  <button id="aceptarCookies">Aceptar</button>
+</div>
+
+<canvas id="fireworks"></canvas>
+<script>
+  const canvas = document.getElementById("fireworks");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let particles = [];
+  let activo = true; // Controlar el efecto
+
+  class Particle {
+    constructor(x, y, color) {
+      this.x = x;
+      this.y = y;
+      this.color = color;
+      this.angle = Math.random() * 2 * Math.PI;
+      this.speed = Math.random() * 5 + 2;
+      this.life = 100;
+    }
+
+    update() {
+      this.x += Math.cos(this.angle) * this.speed;
+      this.y += Math.sin(this.angle) * this.speed;
+      this.speed *= 0.96; // desaceleración
+      this.life--;
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = this.color;
+
+      ctx.fill();
+    }
+  }
+
+  function crearExplosion(x, y) {
+    const colores = ["#ff4b5c", "#ffd92d", "#6bcBef", "#c77dff"];
+
+    for (let i = 0; i <80; i++) {
+      const color = colores[Math.floor(Math.random() * colores.length)];
+      particles.push(new Particle(x, y, color));
+    }
+  }
+
+  // Animación
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach((p, index) => {
+      p.update();
+      p.draw();
+
+      if (p.life <= 0) {
+        particles.splice(index, 1);
+      }
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  // Crear fuegos SOLO mientras esté activo
+  const intervalo = setInterval(() => {
+    if (!activo) return;
+
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height * 0.4;
+    crearExplosion(x, y);
+  }, 800);
+
+  // Detener Todo a los 10 segundos
+  setTimeout(() => {
+    activo = false;
+    clearInterval(intervalo);
+
+    // Limpiar partículas restantes
+    setTimeout(() => {
+      particles = [];
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }, 2000);
+}, 10000);
+
+animate();
+
+// Responsive
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  });
+</script>
+
+<script>
+  let visitas = localStorage.getItem("visitas");
+
+  if (!visitas) {
+    visitas = 0;
+  }
+
+  visitas++;
+  localStorage.setItem("visitas", visitas);
+
+  document.getElementById("contadorVisitas").textContent =
+  "Visitas al sitio: " + visitas;
+</script>
+</body>
+</html>

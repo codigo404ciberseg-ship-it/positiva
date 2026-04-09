@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Testimonios</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+ 
+  <style>
+    /* GENERAL */
+    body {
+      background-image: url(Futbolista\ Amputado.jpeg);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+
+    header {
+      background: rgba(0,0,0,0.4); /* NEGRO SEMI TRANSPARENTE */
+      backdrop-filter: blur(5px); /* EFECTO MODERNO */
+      color: rgb(255, 2, 2);
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+
+    header p {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+
+    .header {
+      background: transparent;
+      padding: 0px 0px;
+    }
+
+    .header-contenido {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .logo {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+    }
+
+    nav {
+      background: white;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background: #4facfe;
+      color: white;
+    }
+
+    nav a.activo {
+      background: #4facfe;
+      color: white;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: flex;
+      align-items: center; /* Clave */
+    }
+
+    .dropdown > a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 40px;
+      background: white;
+      min-width: 200px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+      color: #333;
+    }
+
+    .dropdown-content a:hover {
+      background: #4facfe;
+      color: white;
+    }
+
+    /* Mostrar menú al pasar mouse */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }   
+
+    .hero {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .hero h2 {
+      font-size: 28px;
+      color: #333;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: auto;
+      color: #666;
+    }
+
+    .botones {
+      margin-top: 30px;
+    }
+
+    .botones a {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 25px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn-mapa {
+      background: #4facfe;
+      color: white;
+    }
+
+    .btn-admin {
+      background: #333;
+      color: white;
+    }
+
+    .botones a:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    .seccion {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .seccion h3 {
+      color: #333;
+    }
+
+    .seccion p {
+      max-width: 700px;
+      margin: auto;
+      color: #666;
+    }
+    /* Contenedor General */
+    .cards {
+      padding: 30px;
+      text-align: center;
+    }
+
+    /* SLIDER */
+    .slider {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    /* Contenedor de Cards */
+    .cards-contenedor {
+      display: flex;
+      gap: 20px;
+      transition: transform 0.5s ease;
+    }
+
+    /* Card */
+    .card {
+        min-width: 300px;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden; /* clave para bordes redondeados de la imagen */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Imagen */
+    .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover; /* Evita que se deforme */
+    }
+
+    /* Texto */
+    .card-item {
+        padding: 15px;
+    }
+
+    /* BOTONES */
+    .btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.6);
+        color: white;
+        border: none;
+        font-size: 24px;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    .prev {
+        left: 10px;
+    }
+
+    .next {
+        right: 10px;
+    }
+
+    .btn:hover {
+        background: rgba(0,0,0,0.8);
+    }
+
+    .titulo-seccion {
+        background: #222222c2;
+        font-size: 28px;
+        color: white;
+        margin: 40px 0 20px;
+        text-align: center;
+        position: relative;
+    }
+
+    /* Línea decorativa debajo del título */
+    .titulo-seccion::after {
+        content: "";
+        width: 80px;
+        height: 4px;
+        background: #4facfe;
+        display: block;
+        margin: 10px auto 0;
+        border-radius: 5px;
+    }
+
+    .card-item h4 {
+        margin: 10px;      
+    }
+
+    .card-item p {
+        color: #555;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        transition: 0.3s;
+    }
+
+    footer {
+      background: #222222c2;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    #btnSubir {
+      backdrop-filter: blur(5px);
+      background: rgba(79, 172, 254, 0.7);
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #6e0b0b;
+      color: white;
+      border: none;
+      padding: 12px 15px;
+      font-size: 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none; /* OCULTO AL INICIO */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    #btnSubir:hover {
+      background: #007bff;
+      transform: scale(1.1);
+    }
+
+    .contenedor-gifs {
+        display: flex;
+        justify-content: center;
+        gap: 80px; /* espacio entre imágenes */
+        flex-wrap: wrap; /* se adaptan a celular */
+        margin-top: 20px;
+    }
+
+    .contenedor-gifs img {
+        width: 200px;
+        max-width: 100%;
+        border-radius: 10px;
+    }
+   </style>
+  </head>
+  <body>
+    
+    <header class="header">
+        <div class="header-contenido">
+      
+          <!-- Logo Izquierdo -->
+          <img src="Fundación Positiva.png" alt="Logo Izquierdo" class="logo">
+      
+          <!-- Texto -->
+          <div class="titulo">
+            <h1>Fundación Positiva</h1>
+            <p>Conectando personas y pensamientos a lo largo del país.</p>
+          </div>
+      
+          <!-- Logo Derecho -->
+          <img src="Accion Solidaria.png" alt="Logo Derecho" class="logo">
+        </div>
+        <div class="accesibilidad">
+            <button onclick="leerTexto()">🔊 Escuchar</button>
+            <button onclick="detenerLectura()">⛔ Detener</button>
+          </div>
+      </header>
+
+      <nav>
+        <a href="index.html">Inicio</a>
+        <a href="MapaInteractivo.html">Mapa</a>
+      
+        <div class="dropdown">
+          <a href="#">Sitios de Interés ▾</a>
+      
+          <div class="dropdown-content">
+            <a href="https://www.chileatiende.gob.cl/temas/discapacidad" target="_blank">ChileAtiende Discapacidad</a>
+            <a href="https://www.senadis.gob.cl/" target="_blank">SENADIS</a>
+            <a href="https://fchd.cl/" target="_blank">Fundación Chilena para la Discapacidad</a>
+            <a href="https://coanil.cl/" target="_blank">COANIL</a>
+            <a href="https://fundacionluz.cl/" target="_blank">Fundación Luz</a>
+            <a href="https://fundacioneres.cl/" target="_blank">Fundación Eres</a>
+            <a href="https://sff.sofofa.cl/centros-sofofa/centro-discapacidad" target="_blank">SOFOFA Centro Discapacidad</a>
+            <a href="https://www.descubreme.cl" target="_blank">Fundación Descubreme</a>
+            <a href="https://fundacionpar.cl/" target="_blank">Fundación PAR</a>
+            <a href="https://fundacionfenixchile.cl/" target="_blank">Fundación Fénix Chile</a>
+            <a href="https://especial.mineduc.cl/" target="_blank">Educación Especial</a>
+            <a href="https://mistalentos.cl/" target="_blank">Fundación mis Talentos</a>
+            <a href="https://www.defensorianinez.cl" target="_blank">Defensoría de la Niñez</a>
+            <a href="https://www.senadis.gob.cl/pag/602/1593/organizaciones" target="_blank">Base Datos organizaciones</a>
+          </div>
+        </div>
+      
+        <div class="dropdown">
+          <a href="#">Capacitación Gratis ▾</a>
+      
+          <div class="dropdown-content">
+            <a href="https://academia.senadis.cl/" target="_blank">Academia SENADIS</a>
+            <a href="https://sence.gob.cl/" target="_blank">SENCE</a>
+            <a href="https://edutin.com/curso-de-discapacidad" target="_blank">Edutin Academy</a>
+            <a href="https://cursando.cl/" target="_blank">Cursando</a>
+            <a href="https://www.santanderopenacademy.com/pt_br/index.html" target="_blank">Academia Santander</a>
+          </div>
+        </div>
+        <a href="Testimonios.html" class="activo">Testimonios</a>
+      
+        <a href="PanelAdmin.html">Administración</a>
+      </nav>        
+
+      <h2 class="titulo-seccion">
+        SITIO EN CONSTRUCCIÓN
+      </h2>    
+      
+    <div class="contenedor-gifs">
+      <img src="Trabajando 1.gif" alt="Hombre trabajando 1">
+      <img src="Trabajando 2.gif" alt="Hombre trabajando 2">
+      <img src="Trabajando 3.gif" alt="Hombre trabajando 3">
+    </div>
+            
+    <script>
+        let index = 0;
+        const track = document.getElementById("sliderTrack");
+
+        function actualizarSlider() {
+            const cards = document.querySelectorAll(".card");
+            const ancho = cards[0].offsetWidth + 20;
+            track.style.transform = `translateX(-${index * ancho}px)`;
+        }
+
+        // BOTONES
+        function moverManual(direction) {
+            const cards = document.querySelectorAll(".card");
+
+            index += direction;
+
+            if (index < 0) index = cards.length -1;
+            if (index >= cards.length) index = 0;
+
+            actualizarSlider();
+        }
+
+        // AUTO SLIDER
+        function autoSlider() {
+            const cards = document.querySelectorAll(".ccard");
+
+            index++;
+            if (index >= cards.length) index = 0;
+
+            actualizarSlider();
+        }
+        setInterval(autoSlider, 4000);
+    </script>
+
+<footer>
+    <p>© 2026 <strong>Fundación Positiva</strong> | Organización sin fines de lucro</p>
+    <p>Creado por <strong>© Código 404</strong></p>
+  </footer>
+
+  <script>
+    let hablando = false;
+    
+    function leerTexto() {
+      if (hablando) return;
+    
+      const texto = document.body.innerText;
+      const speech = new SpeechSynthesisUtterance(texto);
+      speech.lang = "es-CL";
+    
+      hablando = true;
+    
+      speech.onend = () => hablando = false;
+    
+      window.speechSynthesis.speak(speech);
+    }
+    
+    function detenerLectura() {
+      window.speechSynthesis.cancel();
+      hablando = false;
+    }
+    </script>
+
+  <script>
+    // Mostrar botón al hacer scroll
+    window.onscroll = function() {
+      let boton = document.getElementById("btnSubir");
+  
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        boton.style.display = "block";
+      } else {
+        boton.style.display = "none";
+      }
+    };
+  
+    // Subir Suavemente
+    function subirArriba() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+  </script>
+  <button id="btnSubir" onclick="subirArriba()">⬆</button>
+  </body>
+</html>

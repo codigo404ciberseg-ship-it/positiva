@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Política de Privacidad</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f6f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #4facfe;
+      color: white;
+      padding: 0px;
+      text-align: center;
+    }
+
+    .contenedor {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 0px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      color: #2c3e50;
+    }
+
+    h2 {
+      margin-top: 25px;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      color: #777;
+    }
+
+    a {
+      color: #4facfe;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Política de Privacidad</h1>
+  <h2>Tratamiento de Datos Personales</h2>
+  <p>Fundación Positiva | Última actualización: 08-04-2026</p>
+  <div class="accesibilidad">
+    <button onclick="leerTexto()">🔊 Escuchar</button>
+    <button onclick="detenerLectura()">⛔ Detener</button>
+  </div>
+</header>
+
+<div class="contenedor">
+
+    <h2>Introducción</h2>
+    En <strong> Fundación Positiva</strong> respetamos la privacidad de las personas que
+    visitan y/o utilizan nuestras plataformas. Esta política describe cómo tratamos los
+    datos personales y que prácticas seguimos con respecto a la información personal.
+    
+    <h2>Datos personales</h2>
+    <strong>Fundación Positiva</strong> no solicita ningún tipo de permiso, tampoco necesita
+    datos personales (salvo que sea estrictamente necesario por casos puntuales.)
+
+    <h2>Cumplimiento Normativo y de Seguridad</h2>
+    <strong>Fundación Positiva</strong> se rige por los siguientes marcos y normativas aplicables:
+    <strong>ISO/IEC 27001</strong> - Sistema de Gestión de Seguridad de la Información,
+    <strong>RGPD (Reglamento General de Protección de Datos)</strong> de la Unión Europea
+    cuando corresponda su aplicación,
+    <strong>Ley 21.719</strong> de Protección de Datos Personales en Chile (normativa aplicable)
+
+    Estas referencias reflejan nuestro compromiso con buenas prácticas de seguridad y 
+    protección de datos, aun cuando no recolectemos datos personales en el uso normal de 
+    nuestras herramientas.
+
+    <h2>Alcance</h2>
+    Esta política aplica a los servicios y herramientas provistos por <strong>Fundación Positiva.</strong>
+    Si en algún caso cambiase el tratamiento de datos (por ejemplo, se incorpora 
+    funcionalidad que requiera datos personales), se informará explícitamente y se 
+    actualizará esta política.
+
+    <h2>Contacto</h2>
+    Ante dudas o consultas sobre esta política de privacidad puedes contactarnos mediante
+    el buzón de sugerencias o bien enviar un correo electrónico a: 
+    <strong>codigo404ciberseg@gmail.com</strong>
+
+  <h2>1. Información General</h2>
+  <p>
+    Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos
+    la información personal de los usuarios que interactúan con este sitio web.
+  </p>
+
+  <h2>2. Datos que recopilamos</h2>
+  <p>Podemos recopilar los siguientes datos personales:</p>
+  <ul>
+    <li>Nombre y apellido</li>
+    <li>Información de contacto</li>
+    <li>Datos de ubicación (como ciudad o comuna)</li>
+    <li>Imágenes proporcionadas voluntariamente</li>
+  </ul>
+
+  <h2>3. Finalidad del uso de datos</h2>
+  <p>
+    Los datos recopilados se utilizan para:
+  </p>
+  <ul>
+    <li>Gestionar registros de usuarios</li>
+    <li>Mejorar la experiencia del usuario</li>
+    <li>Administrar el contenido del sistema</li>
+  </ul>
+
+  <h2>4. Almacenamiento de la información</h2>
+  <p>
+    La información puede ser almacenada localmente en el navegador del usuario
+    mediante tecnologías como <strong>localStorage</strong>, y no es compartida con terceros.
+  </p>
+
+  <h2>5. Protección de los datos</h2>
+  <p>
+    Adoptamos medidas razonables para proteger la información personal contra accesos no autorizados,
+    pérdida o alteración.
+  </p>
+
+  <h2>6. Derechos del usuario</h2>
+  <p>
+    El usuario puede solicitar en cualquier momento:
+  </p>
+  <ul>
+    <li>Acceso a sus datos</li>
+    <li>Modificación o actualización</li>
+    <li>Eliminación de sus datos personales</li>
+  </ul>
+
+  <h2>7. Uso de cookies</h2>
+  <p>
+    Este sitio puede utilizar cookies o tecnologías similares para mejorar la experiencia de navegación.
+  </p>
+
+  <h2>8. Cambios en la política</h2>
+  <p>
+    Nos reservamos el derecho de modificar esta política en cualquier momento.
+    Los cambios serán publicados en esta misma página.
+  </p>
+
+</div>
+
+<script>
+    let hablando = false;
+    
+    function leerTexto() {
+      if (hablando) return;
+    
+      const texto = document.body.innerText;
+      const speech = new SpeechSynthesisUtterance(texto);
+      speech.lang = "es-CL";
+    
+      hablando = true;
+    
+      speech.onend = () => hablando = false;
+    
+      window.speechSynthesis.speak(speech);
+    }
+    
+    function detenerLectura() {
+      window.speechSynthesis.cancel();
+      hablando = false;
+    }
+    </script>
+
+<footer>
+  <strong>© Fundación Positiva</strong> - Todos los derechos reservados 2026
+  <p>Herramientas y Sitio creado por <strong>© Código 404</strong></p>
+</footer>
+
+</body>
+</html>
