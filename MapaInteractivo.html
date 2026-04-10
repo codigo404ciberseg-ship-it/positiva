@@ -417,50 +417,71 @@
 
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  
+  const firebaseConfig = {
+    apiKey: "AIzaSyDj5JqqrAtcsFANIofAFXM95WwZ5diEvPc",
+    authDomain: "fundacion-positiva.firebaseapp.com",
+    projectId: "fundacion-positiva",
+    storageBucket: "fundacion-positiva.firebasestorage.app",
+    messagingSenderId: "966552800768",
+    appId: "1:966552800768:web:308352e610d7be2d8092e5",
+  };
+  
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-<script>
-const map = L.map('map').setView([-33.45, -70.66], 4);
+const map = L.map('map').setView([ -33.45, -70.66], 4);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
 .addTo(map);
 
-// 🔹 Cargar datos
-const datos = JSON.parse(localStorage.getItem("personas")) || [];
+async function cargarMapa() {
 
-let contador = 0;
-let total = datos.length;
+  const datos = [];
+  
+  const querySnapshot = await getDocs(collection(db, "personas"));
+  querySnapshot.forEach((doc) => {
+    datos.push(doc.data());
+  });
 
-let intervalo = setInterval(() => {
-  contador++;
+  //CONTADOR
   document.getElementById("contadorPersonas").textContent =
-"👥 Personas registradas: " + contador;
+  "👥 Personas registradas: " + datos.length;
 
-if (contador >= total) clearInterval(intervalo);
-}, 50);
+  // MARCADORES
+  datos.forEach(async (p) => {
 
-// 🔹 Mostrar en mapa
-datos.forEach(async (p) => {
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${p.localidad}, Chile`);
+      const data = await res.json();
 
-  const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${p.localidad}, Chile`);
-  const data = await res.json();
+      if (data.length > 0) {
+        const lat = data[0].lat;
+        const lon = data[0].lon;
 
-  if (data.length > 0) {
-    const lat = data[0].lat;
-    const lon = data[0].lon;
+        L.marker([lat, lon]).addTo(map)
+        .bindPopup(`
+        <div style="text-align:center">
+          ${p.foto ? `<img src="${p.foto}" width="100" style="border-radius:8px;"><br>` :""}
+          <br>${p.nombre} ${p.apellido}</b><br>
+          ${p.ocupacion}<br>
+          ${p.localidad}<br>
+          ${p.region}<br>
+          </div>
+        `);
+      }
+    } catch (error) {
+      console.error("Error ubicación:", error);
+    }
 
-    L.marker([lat, lon]).addTo(map)
-  .bindPopup(`
-    <div style="text-align:center">
-      ${p.foto ? `<img src="${p.foto}" width="100" style="border-radius:8px;"><br>` : ""}
-      <b>${p.nombre} ${p.apellido}</b><br>
-      ${p.ocupacion}<br> 
-      ${p.localidad}<br>
-      ${p.region}<br>     
-    </div>
-  `);
-  }
-});
+  });
+}
+
+// EJECUTAR
+cargarMapa();
 </script>
 
 <footer>
