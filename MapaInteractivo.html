@@ -440,6 +440,11 @@
   L.titleLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
   .addTo(map);
 
+  // SOLUCION
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 500);
+
   // CARGAR DATOS
   async function cargarMapa() {
 
