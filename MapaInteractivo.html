@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Mapa de Personas</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>
+    body {
+      background-image: url(01.png);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed; /* EFECTO MODERNO */
+      background-repeat: no-repeat;
+    }
+
+    header {
+      background: rgba(0,0,0,0.4); /* NEGRO SEMI TRANSPARENTE */
+      backdrop-filter: blur(5px); /* EFECTO MODERNO */
+      color: rgb(255, 2, 2);
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+
+    header p {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+
+    .header {
+      background: transparent;
+      padding: 0px 0px;
+    }
+
+    .header-contenido {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .logo {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+    }
+
+    nav {
+      background: white;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background: #4facfe;
+      color: white;
+    }
+
+    nav a.activo {
+      background: #4facfe;
+      color: white;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: flex;
+      align-items: center; /* Clave */
+    }
+
+    .dropdown > a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 40px;
+      background: white;
+      min-width: 200px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+      color: #333;
+    }
+
+    .dropdown-content a:hover {
+      background: #4facfe;
+      color: white;
+    }
+
+    /* Mostrar menú al pasar mouse */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .hero h2 {
+      font-size: 28px;
+      color: #333;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: auto;
+      color: #666;
+    }
+
+    .botones {
+      margin-top: 30px;
+    }
+
+    .botones a {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 25px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn-mapa {
+      background: #4facfe;
+      color: white;
+    }
+
+    .btn-admin {
+      background: #333;
+      color: white;
+    }
+
+    .botones a:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    .seccion {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .seccion h3 {
+      color: #333333;
+    }
+
+    .seccion p {
+      max-width: 700px;
+      margin: auto;
+      color: #666;
+    }
+
+    footer {
+      background: #222222c2;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+  #map{
+    height:700px;
+    width:450px;
+    }
+    nav {
+      background: white;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background: #4facfe;
+      color: white;
+    }
+
+    .titulo-seccion {
+      background: #33333374;
+      font-size: 28px;
+      color: rgb(221, 245, 6);
+      margin: 40px 0 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .titulo-seccion::after {
+      content: "";
+      width: 80px;
+      height: 4px;
+      background: #4facfe;
+      display: block;
+      margin: 10px auto 0;
+      border-radius: 5px;
+    }
+
+    #btnSubir {
+      backdrop-filter: blur(5px);
+      background: rgba(79, 172, 254, 0.7);
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #6e0b0b;
+      color: white;
+      border: none;
+      padding: 12px 15px;
+      font-size: 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none; /* OCULTO AL INICIO */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    #btnSubir:hover {
+      background: #007bff;
+      transform: scale(1.1);
+    }
+
+    .mapa-contenedor {
+      position: relative;
+      width: 450px; /* mismo ancho que nuestro mapa */
+      margin: 40px auto;
+    }
+
+    /* MAPA */
+    #map {
+      height: 700px;
+      width: 100%;
+      border-radius: 10px;
+      z-index: 1;
+    }
+
+    /* IMÁGENES */
+    .decoracion {
+      position: absolute;
+      width: 120px;
+      z-index: 2;
+      opacity: 0.9;
+      transition: transform 0.3s;
+    }
+
+    /* POSICIONES + ROTACIÓN */
+    .img1 {
+      top: 0px;
+      left: -60px;
+      transform: rotate(-15deg);
+    }
+
+    .img2 {
+      bottom: 0px;
+      right: -60px;
+      transform: rotate(20deg);
+    }
+
+    .img3 {
+      top: 50%;
+      right: -70px;
+      transform: rotate(-10deg);
+    }
+
+    .img4 {
+      top: 0px;
+      right: -60px;
+      transform: rotate(20deg);
+    }
+
+    .img5 {
+      bottom: 0px;
+      left: -60px;
+      transform: rotate(20deg);
+    }
+
+    .img6 {
+      top: 50%;
+      left: -70px;
+      transform: rotate(-10deg);
+    }
+
+    /* EFECTO HOVER */
+    .decoracion:hover {
+      transform: rotate(0deg) scale(1.1);
+    }
+
+    #contadorPersonas {
+      text-align: center;
+      color: rgb(22, 6, 248);
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-contenido">
+
+      <!-- Logo Izquierdo -->
+    <img src="Fundación Positiva.png" alt="Logo Izquierdo" class="logo">
+
+    <!-- Texto -->
+    <div class="titulo">
+      <h1>Fundación Positiva</h1>
+      <p>Conectando personas y pensamientos a lo largo del país.</p>
+      <h3 id="contadorPersonas"></h3>
+    </div>
+
+    <!-- Logo Derecho -->
+    <img src="Accion Solidaria.png" alt="Logo Derecho" class="logo">
+  </div>
+  <div class="accesibilidad">
+    <button onclick="leerTexto()">🔊 Escuchar</button>
+    <button onclick="detenerLectura()">⛔ Detener</button>
+  </div>
+</header>
+
+<nav>
+  <a href="index.html">Inicio</a>
+  <a href="MapaInteractivo.html" class="activo">Mapa</a>
+
+  <div class="dropdown">
+    <a href="#">Sitios de Interés ▾</a>
+
+    <div class="dropdown-content">
+      <a href="https://www.chileatiende.gob.cl/temas/discapacidad" target="_blank">ChileAtiende Discapacidad</a>
+      <a href="https://www.senadis.gob.cl/" target="_blank">SENADIS</a>
+      <a href="https://fchd.cl/" target="_blank">Fundación Chilena para la Discapacidad</a>
+      <a href="https://coanil.cl/" target="_blank">COANIL</a>
+      <a href="https://fundacionluz.cl/" target="_blank">Fundación Luz</a>
+      <a href="https://fundacioneres.cl/" target="_blank">Fundación Eres</a>
+      <a href="https://sff.sofofa.cl/centros-sofofa/centro-discapacidad" target="_blank">SOFOFA Centro Discapacidad</a>
+      <a href="https://www.descubreme.cl" target="_blank">Fundación Descubreme</a>
+      <a href="https://fundacionpar.cl/" target="_blank">Fundación PAR</a>
+      <a href="https://fundacionfenixchile.cl/" target="_blank">Fundación Fénix Chile</a>
+      <a href="https://especial.mineduc.cl/" target="_blank">Educación Especial</a>
+      <a href="https://mistalentos.cl/" target="_blank">Fundación mis Talentos</a>
+      <a href="https://www.defensorianinez.cl" target="_blank">Defensoría de la Niñez</a>
+      <a href="https://www.senadis.gob.cl/pag/602/1593/organizaciones" target="_blank">Base Datos organizaciones</a>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <a href="#">Capacitación Gratis ▾</a>
+
+    <div class="dropdown-content">
+      <a href="https://academia.senadis.cl/" target="_blank">Academia SENADIS</a>
+      <a href="https://sence.gob.cl/" target="_blank">SENCE</a>
+      <a href="https://edutin.com/curso-de-discapacidad" target="_blank">Edutin Academy</a>
+      <a href="https://cursando.cl/" target="_blank">Cursando</a>
+      <a href="https://www.santanderopenacademy.com/pt_br/index.html" target="_blank">Academia Santander</a>
+    </div>
+  </div>
+  <a href="Testimonios.html">Testimonios</a>
+
+  <a href="PanelAdmin.html">Administración</a>
+</nav>
+<h2 class="titulo-seccion">Haga Clic en marcadores azules en el mapa</h2>
+<div class="mapa-contenedor">
+
+  <!-- Imagen decorativa 1 -->
+  <img src="Amputado1.jpg" class="decoracion img1" alt="decoracion">
+
+  <!-- Mapa -->
+  <div id="map"></div>
+
+  <!-- Imagen decorativa 2 -->
+  <img src="Amputado2.jpg" class="decoracion img2" alt="decoracion">
+
+  <!-- Imagen decorativa 3 -->
+  <img src="Amputado3.jpg" class="decoracion img3" alt="decoracion">
+
+  <!-- Imagen decorativa 4 -->
+  <img src="Amputado4.jpg" class="decoracion img4" alt="decoracion">
+
+  <!-- Imagen decorativa 5 -->
+  <img src="Amputado5.jpg" class="decoracion img5" alt="decoracion">
+
+  <!-- Imagen decorativa 6 -->
+  <img src="Amputado6.jpg" class="decoracion img6" alt="decoracion">
+
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // CONFIG FIREBASE
+  const firebaseConfig = {
+    apiKey: "AIzaSyDj5JqqrAtcsFANIofAFXM95WwZ5diEvPc",
+    authDomain: "fundacion-positiva.firebaseapp.com",
+    projectId: "fundacion-positiva",
+    storageBucket: "fundacion-positiva.firebasestorage.app",
+    messagingSenderId: "966552800768",
+    appId: "1:966552800768:web:308352e610d7be2d8092e5",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirebase(app);
+
+  // MAPA
+  const map = L.map('map').setView([-33.45, -70.66], 4);
+
+  L.titleLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+  .addTo(map);
+
+  // CARGAR DATOS
+  async function cargarMapa() {
+
+    const datos = [];
+
+    const querySnapshot = await getDocs(collection(db, "personas"));
+    querySnapshot.forEach((doc) => {
+      datos.push(doc.data());
+    });
+
+    // CONTADOR
+    document.getElementById("contadorPersonas").textContent =
+    "👥 Personas registradas: " + datos.length;
+
+    // MARCADORES
+    for (let p of datos) {
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${p.localidad}, Chile`);
+        const data = await res.json();
+
+        if (data.length > 0) {
+          const lat = data[0].lat;
+          const lon = data[0].lon;
+
+          L.marker([lat, lon]).addTo(map)
+          .bindPopup(`
+          <div style="text-align:center">
+            ${p.foto ? `<img src="${p.foto}" width="100"><br>` : ""}
+            <b>${p.nombre} ${p.apellido}</b><br>
+            ${p.ocupacion}<br>
+            ${p.localidad}<br>
+            ${p.region}
+            </div>
+            `);
+        }
+      } catch (error) {
+        console.error("Error ubicación;", error);
+      }
+    }
+  }
+
+  cargarMapa();
+</script>
+
+<footer>
+  <p>© 2026 <strong>Fundación Positiva</strong> | Organización sin fines de lucro</p>
+  <p>Creado por <strong>© Código 404</strong></p>
+</footer>
+
+<script>
+  let hablando = false;
+  
+  function leerTexto() {
+    if (hablando) return;
+  
+    const texto = document.body.innerText;
+    const speech = new SpeechSynthesisUtterance(texto);
+    speech.lang = "es-CL";
+  
+    hablando = true;
+  
+    speech.onend = () => hablando = false;
+  
+    window.speechSynthesis.speak(speech);
+  }
+  
+  function detenerLectura() {
+    window.speechSynthesis.cancel();
+    hablando = false;
+  }
+  </script>
+
+<script>
+  // Mostrar botón al hacer scroll
+  window.onscroll = function() {
+    let boton = document.getElementById("btnSubir");
+
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+      boton.style.display = "block";
+    } else {
+      boton.style.display = "none";
+    }
+  };
+
+  // Subir Suavemente
+  function subirArriba() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+</script>
+<button id="btnSubir" onclick="subirArriba()">⬆</button>
+
+<footer>
+  <p>© 2026 <strong>Fundación Positiva</strong> | Organización sin fines de lucro</p>
+  <p>Creado por <strong>© Código 404</strong></p>
+</footer>
+
+<script>
+  // Mostrar botón al hacer scroll
+  window.onscroll = function() {
+    let boton = document.getElementById("btnSubir");
+
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+      boton.style.display = "block";
+    } else {
+      boton.style.display = "none";
+    }
+  };
+
+  // Subir Suavemente
+  function subirArriba() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+</script>
+<button id="btnSubir" onclick="subirArriba()">⬆</button>
+
+</body>
+</html>
