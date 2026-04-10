@@ -437,8 +437,10 @@
   // MAPA
   const map = L.map('map').setView([-33.45, -70.66], 4);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-  .addTo(map);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
 
   // SOLUCION
   window.onload = function () {
@@ -453,16 +455,15 @@
     const datos = [];
 
     const querySnapshot = await getDocs(collection(db, "personas"));
-    querySnapshot.forEach((doc) => {
-      datos.push(doc.data());
-    });
 
-    // CONTADOR
-    document.getElementById("contadorPersonas").textContent =
-    "👥 Personas registradas: " + datos.length;
+    let total = 0;
 
-    // MARCADORES
-    for (let p of datos) {
+    for (const doc of querySnapshot.docs) {
+      
+      const p = doc.data();
+      total++;
+
+      // MARCADORES
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${p.localidad}, Chile`);
         const data = await res.json();
@@ -474,7 +475,7 @@
           L.marker([lat, lon]).addTo(map)
           .bindPopup(`
           <div style="text-align:center">
-            ${p.foto ? `<img src="${p.foto}" width="100"><br>` : ""}
+            ${p.foto ? `<img src="${p.foto}" width="100" style="border-radius:8px;"><br>` : ""}
             <b>${p.nombre} ${p.apellido}</b><br>
             ${p.ocupacion}<br>
             ${p.localidad}<br>
@@ -483,11 +484,15 @@
             `);
         }
       } catch (error) {
-        console.error("Error ubicación;", error);
+        console.error("Error geolocalizando;", error);
       }
     }
+  // CONTADOR
+    document.getElementById("contadorPersonas").textContent =
+    "👥 Personas registradas: " + total;
   }
 
+  // EJECUTAR
   cargarMapa();
 </script>
 
