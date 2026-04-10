@@ -441,9 +441,11 @@
   .addTo(map);
 
   // SOLUCION
-  setTimeout(() => {
+  window.onload = function () {
+    setTimeout(() => {
     map.invalidateSize();
   }, 500);
+  };
 
   // CARGAR DATOS
   async function cargarMapa() {
