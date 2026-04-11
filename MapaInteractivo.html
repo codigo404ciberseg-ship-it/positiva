@@ -454,7 +454,16 @@ async function cargar() {
     if (p.lat && p.lng) {
       L.marker([p.lat, p.lng])
         .addTo(map)
-        .bindPopup(p.nombre + " " + p.apellido);
+        .bindPopup(`
+        <div style="text-align:center; max-width:200px;">
+    ${p.foto ? `<img src="${p.foto}" width="100" style="border-radius:8px;"><br>` : ""}
+    <b>${p.nombre} ${p.apellido}</b><br>
+    ${p.ocupacion ? p.ocupacion + "<br>" : ""}
+    ${p.localidad}<br>
+    ${p.region}
+  </div>
+`)
+
     }
   });
 }
