@@ -163,13 +163,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let fotoBase64 = "";
 
-    if (archivo && archivo.size <= 500000) {
+    if (archivo && archivo.size <= 300000) {
       fotoBase64 = await convertirImagen(archivo);
     }
 
     // Obtener Coordenadas
-    let lat = -35;
-    let lng = -71;
+    let lat = null;
+    let lng = null;
 
     try {
       const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${localidad}, Chile`);
@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
         lng = parseFloat(data[0].lon);
       }
     } catch (e) {
-      console.warn("No se pudo geolocalizar");
+      console.warn("Error geolocalización");
     }
 
     // Guardar en Firebase
@@ -197,17 +197,15 @@ document.addEventListener("DOMContentLoaded", () => {
       fecha: new Date()      
     });
 
-    alert("Guardado en la nube ✔");
+    alert("Guardado correctamente ✔");
+      
     limpiar();
 
     } catch (error) {
-      console.error("Error Firebase:", error);
+      console.error("e);
       alert("Error al guardar en Firebase");
-    }
-    
+    }    
   });
-
-});
 
   // Limpiar Form
   function limpiar() {
