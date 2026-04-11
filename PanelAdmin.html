@@ -335,8 +335,8 @@ document.getElementById("btnGuardar").addEventListener("click", async () => {
 
     // 🔴 CONTROL DE TAMAÑO (CLAVE)
     if (archivo) {
-      if (archivo.size > 50000) { // 500KB
-        alert("La imagen es muy pesada (máx 500KB). Se guardará sin imagen.");
+      if (archivo.size > 200000) { // 200KB
+        alert("La imagen es muy pesada (máx 200KB). Se guardará sin imagen.");
       } else {
         try {
           fotoBase64 = await convertirImagen(archivo);
