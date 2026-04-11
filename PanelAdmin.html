@@ -116,98 +116,93 @@
 </head>
 
 <body>
-  <script type="module">
+ <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
- 
-  // FIREBASE CONFIG
- const firebaseConfig = {
+
+// 🔥 CONFIG
+const firebaseConfig = {
   apiKey: "AIzaSyDTxUtqXNOJnRaevn06x4VaBO_YSL32FNQ",
   authDomain: "fundacionpositiva-45a7c.firebaseapp.com",
   projectId: "fundacionpositiva-45a7c",
-  storageBucket: "fundacionpositiva-45a7c.firebasestorage.app",
-  messaginSenderId: "991476563880",
-  appId: "1:991476563880:web:0f2c5d269f0da135f7279d",
- };
+};
 
-  // INICIAR FIREBASE
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  // Convertir imagen
-  function convertirImagen(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-      reader.readAsDataURL(file);
-    });
-  }
+// 🖼️ Convertir imagen
+function convertirImagen(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
+  });
+}
 
-  // ESPERAR QUE CARGUE EL DOM
+// 🚀 CUANDO CARGA TODO
 document.addEventListener("DOMContentLoaded", () => {
-  
-  document.getElementById("btnGuardar").addEventListener("click", async() => {
 
-    const nombre = document.getElementById("nombre").value.trim();
-    const apellido = document.getElementById("apellido").value.trim();
-    const ocupacion = document.getElementById("ocupacion").value.trim();
-    const localidad = document.getElementById("localidad").value.trim();
-    const region = document.getElementById("region").value.trim();
-    const archivo = document.getElementById("foto").files[0];
-
-    if (!nombre || !apellido || !localidad || !region) {
-      alert("Completa los campos obligatorios");
-      return;
-    }
-
-    let fotoBase64 = "";
-
-    if (archivo && archivo.size <= 300000) {
-      fotoBase64 = await convertirImagen(archivo);
-    }
-
-    // Obtener Coordenadas
-    let lat = null;
-    let lng = null;
+  document.getElementById("btnGuardar").addEventListener("click", async () => {
 
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${localidad}, Chile`);
-      const data = await res.json();
+      const nombre = document.getElementById("nombre").value.trim();
+      const apellido = document.getElementById("apellido").value.trim();
+      const ocupacion = document.getElementById("ocupacion").value.trim();
+      const localidad = document.getElementById("localidad").value.trim();
+      const region = document.getElementById("region").value.trim();
+      const archivo = document.getElementById("foto").files[0];
 
-      if (data.length > 0) {
-        lat = parseFloat(data[0].lat);
-        lng = parseFloat(data[0].lon);
+      if (!nombre || !apellido || !localidad || !region) {
+        alert("Completa los campos obligatorios");
+        return;
       }
+
+      let fotoBase64 = "";
+
+      if (archivo && archivo.size <= 300000) {
+        fotoBase64 = await convertirImagen(archivo);
+      }
+
+      // 📍 Coordenadas
+      let lat = null;
+      let lng = null;
+
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${localidad}, Chile`);
+        const data = await res.json();
+
+        if (data.length > 0) {
+          lat = parseFloat(data[0].lat);
+          lng = parseFloat(data[0].lon);
+        }
+      } catch (e) {
+        console.warn("Error geolocalización");
+      }
+
+      // 🔥 GUARDAR EN FIREBASE
+      await addDoc(collection(db, "personas"), {
+        nombre,
+        apellido,
+        ocupacion,
+        localidad,
+        region,
+        foto: fotoBase64,
+        lat,
+        lng,
+        fecha: new Date()
+      });
+
+      alert("Guardado correctamente ✔");
+
+      limpiar();
+
     } catch (e) {
-      console.warn("Error geolocalización");
-    }
-
-    // Guardar en Firebase
-    try {
-    await addDoc(collection(db, "personas"), {
-      nombre,
-      apellido,
-      ocupacion,
-      localidad,
-      region,
-      foto: fotoBase64,
-      lat,
-      lng,
-      fecha: new Date()      
-    });
-
-    alert("Guardado correctamente ✔");
-      
-    limpiar();
-
-    } catch (error) {
-      console.error("e);
+      console.error(e);
       alert("Error al guardar en Firebase");
-    }    
+    }
   });
 
-  // Limpiar Form
   function limpiar() {
     document.getElementById("nombre").value = "";
     document.getElementById("apellido").value = "";
@@ -216,7 +211,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("region").value = "";
     document.getElementById("foto").value = "";
   }
-  
+
+});
 </script>
 
 <script>
@@ -264,7 +260,6 @@ if (intento !== PASSWORD) {
 
 <script>
 // 📦 DATOS
-let datos = JSON.parse(localStorage.getItem("personas")) || [];
 
 const regiones = {
   "Arica y Parinacota": ["Arica","Camarones","Putre","General Lagos"],
@@ -340,7 +335,7 @@ document.getElementById("btnGuardar").addEventListener("click", async () => {
 
     // 🔴 CONTROL DE TAMAÑO (CLAVE)
     if (archivo) {
-      if (archivo.size > 500000) { // 500KB
+      if (archivo.size > 50000) { // 500KB
         alert("La imagen es muy pesada (máx 500KB). Se guardará sin imagen.");
       } else {
         try {
