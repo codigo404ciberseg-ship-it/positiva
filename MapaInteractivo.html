@@ -437,11 +437,13 @@
   // MAPA
   const map = L.map('map').setView([-33.45, -70.66], 4);
 
-  L.tileLayer('https://{s}.basemaps.carocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OpenStreetMap & CartoDB',
-    subdomains: 'abcd',
-    maxZoom: 19
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
   }).addTo(map);
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 500);
 
   // CARGAR DATOS
   async function cargarMapa() {
