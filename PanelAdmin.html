@@ -408,7 +408,6 @@ function mostrarLista() {
 function eliminar(index) {
   if (confirm("¿Eliminar este registro?")) {
     datos.splice(index, 1);
-    mostrarLista();
   }
 }
 
@@ -421,9 +420,6 @@ function limpiar() {
   document.getElementById("region").value = "";
   document.getElementById("foto").value = "";
 }
-
-// 🚀 INIT
-mostrarLista();
 </script>
 
 </body>
