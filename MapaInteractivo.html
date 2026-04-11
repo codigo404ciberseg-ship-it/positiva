@@ -424,9 +424,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  async function iniciarApp() {
-
-  // CONFIG FIREBASE
+  // CONFIG FIREBASE - IGUAL QUE LA DE ADMIN
   const firebaseConfig = {
     apiKey: "AIzaSyDTxUtqXNOJnRaevn06x4VaBO_YSL32FNQ",
     authDomain: "fundacionpositiva-45a7c.firebaseapp.com",
@@ -436,14 +434,9 @@
     appId: "1:991476563880:web:0f2c5d269f0da135f7279d",
   };
 
+  // INICIAR FIREBASE
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-
-  // ESPERAR A QUE LEAFLET EXISTA
-    if (typeof L === "undefined") {
-      console.error("Leaflet NO cargó");
-      return;
-    }
 
   // MAPA
   const map = L.map('map').setView([-33.45, -70.66], 4);
@@ -452,79 +445,40 @@
     maxZoom: 19
   }).addTo(map);
 
-  // ARREGLAR RENDER
-  setTimeout(() => {
-    map.invalidateSize();
-  }, 500);
+  // CONTADOR
+  const contador = document.getElementById("contadorPersonas");
 
-  // MARCADOR DE DATOS
-    L.marker([-33.45, -70.66]).addTo(map)
-    .bindPopup("Marcador de prueba")
-    .openPopup();
+  // TIEMPO REAL (CLAVE)
+  onSnapchot(collection(db, "personas"), (snapshot) => {
 
-  // CARGAR DATOS
-    const querySnapshot = await getDocs(collection(db, "personas"));
-
-    console.log("Documentos encontrados:", querySnapshot.size);
-
-    // CONTADOR
-    document.getElementById("contadorPersonas").textContent =
-      "👥 Personas registradas: " + querySnapshot.size;
-
-    // RECORRER DATOS
-    for (const doc of querySnapshot.docs) {
-
-      const p = doc.data();
-      console.log("Persona:", p);
-
-      let lat, lon;
-
-      // MODO PRO (si ya tienes coordenadas guardadas)
-      if (p.lat && p.lng) {
-        lat = p.lat;
-        lon = p.lng;
-      } else {
-
-      // FALLBACK CON NOMINATIM
-      try {
-        console.log("Buscando:", p.localidad);
-        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${p.localidad}, Chile`);
-        const data = await res.json();
-
-        console.log("Sin resultado:", data);
-
-        if (data.length > 0) {
-          lat = data[0].lat;
-          lon = data[0].lon;
-        } else {
-          throw "Sin resultados";
-        }
-      } catch (error) {
-
-        console.warn("Usando coordenadas por defecto");
-
-      // CENTRO DE CHILE (fallback seguro)
-        lat = -35;
-        lon = -71;
+    // Limpiar mapa (evita duplicados)
+    map.eachLayer(Layer => {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
       }
-    }
-      // CREAR MARCADOR REAL
-      L.marker([lat, lon]).addTo(map)
-      .bindPoup(`
-      <div style="text-align:center">
-      ${p.foto ? `<img src="${p.fofo}" width="100" style="border-radius:8px;"><br>` : ""}
-      <b>${p.nombre} ${p.apellido}</b><br>
-      ${p.ocupacion || "Sin ocupación"}<br>
-      ${p.localidad}<br>
-      ${p.region}
-      </div>
-    );
- }
-}
+    });
 
-  // ARRANQUE SEGURO
-  window.onload = iniciarApp;
-  
+    let total = 0;
+
+    snapshot.forEach(doc => {
+      const p = doc.data();
+      total++;
+
+      if (p.lat && p.lng) {
+        L.marker([p.lat, p.lng]).addTo(map)
+        .bindPopup(`
+        <div style="text-align:center">
+        $p.foto ? `<img src="${p.foto}" width="100" style="border-radius:8px;"><br>` : ""}
+        ${p.ocupacion || ""}<br>
+        ${p.localidad}<br>
+        ${p.region}
+        </div>
+        `);
+      }
+    });
+
+    contador.textContent = "👥 Personas registradas: " + total;
+  });  
 </script>
 
 <footer>
