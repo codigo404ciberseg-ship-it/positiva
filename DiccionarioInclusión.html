@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Glosario de Inclusión</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #f4f6f8;
+    }
+    header {
+        background-color: #2c3e50;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+    .header-contenido {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .logo {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+    }
+    nav {
+      background: white;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      padding: 8px 15px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background: #4facfe;
+      color: white;
+    }
+
+    nav a.activo {
+      background: #4facfe;
+      color: white;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: flex;
+      align-items: center; /* Clave */
+    }
+
+    .dropdown > a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 40px;
+      background: white;
+      min-width: 200px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+      color: #333;
+    }
+
+    .dropdown-content a:hover {
+      background: #4facfe;
+      color: white;
+    }
+
+    /* Mostrar menú al pasar mouse */
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    input {
+        width: 80%;
+        padding: 10px;
+        margin: 20px auto;
+        display: block;
+        font-size: 16px;
+    }
+    .container {
+        max-width: 1000px;
+        margin: auto;
+        padding: 20px;
+    }
+    .term {
+        background: white;
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .term:hover {
+        background: #e8f0fe;
+    }
+    .definition {
+        display: none;
+        margin-top: 10px;
+        color: #333;
+    }
+    .letter {
+        margin-top: 30px;
+        font-size: 24px;
+        color: #2c3e50;
+    }
+    footer {
+      background: #222222c2;
+      color: white;
+      text-align: center;
+      padding: 2px;
+      margin-top: 40px;
+    }
+</style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-contenido">
+      
+          <!-- Logo Izquierdo -->
+          <img src="Fundación Positiva.png" alt="Logo Izquierdo" class="logo">
+      
+          <!-- Texto -->
+          <div class="titulo">
+            <h1>Fundación Positiva</h1>
+            <p>Conectando personas y pensamientos a lo largo del país.</p>
+          </div>
+      
+          <!-- Logo Derecho -->
+          <img src="Accion Solidaria.png" alt="Logo Derecho" class="logo">
+        </div>
+        <button onclick="leerTexto()">🔊 Escuchar contenido</button>
+        <button onclick="detenerLectura()">⛔ Detener</button>
+      </header>
+      
+      <nav>
+        <a href="index.html">Inicio</a>
+        <a href="MapaInteractivo.html">Mapa</a>
+        <a href="DiccionarioInclusión.html" class="activo">Glosario</a>
+      
+        <div class="dropdown">
+          <a href="#">Sitios de Interés ▾</a>
+      
+          <div class="dropdown-content">
+            <a href="https://www.chileatiende.gob.cl/temas/discapacidad" target="_blank">ChileAtiende Discapacidad</a>
+            <a href="https://www.senadis.gob.cl/" target="_blank">SENADIS</a>
+            <a href="https://fchd.cl/" target="_blank">Fundación Chilena para la Discapacidad</a>
+            <a href="https://coanil.cl/" target="_blank">COANIL</a>
+            <a href="https://fundacionluz.cl/" target="_blank">Fundación Luz</a>
+            <a href="https://fundacioneres.cl/" target="_blank">Fundación Eres</a>
+            <a href="https://sff.sofofa.cl/centros-sofofa/centro-discapacidad" target="_blank">SOFOFA Centro Discapacidad</a>
+            <a href="https://www.descubreme.cl" target="_blank">Fundación Descubreme</a>
+            <a href="https://fundacionpar.cl/" target="_blank">Fundación PAR</a>
+            <a href="https://fundacionfenixchile.cl/" target="_blank">Fundación Fénix Chile</a>
+            <a href="https://especial.mineduc.cl/" target="_blank">Educación Especial</a>
+            <a href="https://mistalentos.cl/" target="_blank">Fundación mis Talentos</a>
+            <a href="https://www.defensorianinez.cl" target="_blank">Defensoría de la Niñez</a>
+            <a href="https://www.senadis.gob.cl/pag/602/1593/organizaciones" target="_blank">Base Datos organizaciones</a>
+          </div>
+        </div>
+      
+        <div class="dropdown">
+          <a href="#">Capacitación Gratis ▾</a>
+      
+          <div class="dropdown-content">
+            <a href="https://academia.senadis.cl/" target="_blank">Academia SENADIS</a>
+            <a href="https://sence.gob.cl/" target="_blank">SENCE</a>
+            <a href="https://edutin.com/curso-de-discapacidad" target="_blank">Edutin Academy</a>
+            <a href="https://cursando.cl/" target="_blank">Cursando</a>
+            <a href="https://www.santanderopenacademy.com/pt_br/index.html" target="_blank">Academia Santander</a>
+          </div>
+        </div>
+        <a href="Testimonios.html">Testimonios</a>
+      
+        <a href="PanelAdmin.html">Administración</a>
+      </nav>
+
+<header>
+    <h1>Glosario de Inclusión</h1>
+    <p>Haga click en los conceptos</p>
+</header>
+
+<div class="container" id="glossary">
+
+    <div class="letter">A</div>
+
+    <div class="term">
+        Accesibilidad
+        <div class="definition">Condición que permite a todas las personas, incluidas aquellas con discapacidad, acceder, desplazarse, comunicarse y participar en igualdad de condiciones en entornos físicos, digitales y sociales.</div>
+    </div>
+
+    <div class="term">
+        Accesibilidad universal
+        <div class="definition">Principio que garantiza que entornos, productos y servicios sean utilizables por todas las personas.</div>
+    </div>
+
+    <div class="term">
+        Ajustes razonables
+        <div class="definition">Modificaciones necesarias para garantizar igualdad de oportunidades sin carga excesiva.</div>
+    </div>
+
+    <div class="term">
+        Amputación
+        <div class="definition">Extirpación total o parcial de una extremidad por causas médicas o traumáticas.</div>
+    </div>
+
+    <div class="term">
+        Amputación adquirida
+        <div class="definition">Aquella que ocurre después del nacimiento, generalmente por accidente, enfermedad (como diabetes) o infección.</div>
+    </div>
+
+    <div class="term">
+        Amputación congénita
+        <div class="definition">Ausencia de una extremidad o parte de ella desde el nacimiento.</div>
+    </div>
+
+    <div class="term">
+        Amputación transfemoral
+        <div class="definition">Amputación realizada por encima de la rodilla.</div>
+    </div>
+
+    <div class="term">
+        Amputación transtibial
+        <div class="definition">Amputación realizada por debajo de la rodilla.</div>
+    </div>
+
+    <div class="term">
+        Autonomía personal
+        <div class="definition">Capacidad de una persona para tomar decisiones y realizar actividades de la vida diaria de manera independiente.</div>
+    </div>
+
+    <div class="letter">B</div>
+
+    <div class="term">
+        Barreras actitudinales
+        <div class="definition">Prejuicios o creencias que limitan la inclusión.</div>
+    </div>
+
+    <div class="term">
+        Barreras físicas
+        <div class="definition">Obstáculos en el entorno que dificultan la movilidad.</div>
+    </div>
+
+    <div class="letter">C</div>
+
+    <div class="term">
+        Capacidad funcional
+        <div class="definition">Habilidades que permiten a una persona desenvolverse en su entorno.</div>
+    </div>
+
+    <div class="term">
+        CIF
+        <div class="definition">Clasificación Internacional del Funcionamiento que describe la discapacidad desde un enfoque integral.</div>
+    </div>
+
+    <div class="letter">D</div>
+
+    <div class="term">
+        Discapacidad
+        <div class="definition">Resultado de la interacción entre una persona y las barreras del entorno.</div>
+    </div>
+
+    <div class="term">
+        Diseño universal
+        <div class="definition">Creación de entornos utilizables por todas las personas sin adaptación.</div>
+    </div>
+
+    <div class="term">
+        Dolor fantasma
+        <div class="definition">Sensación de dolor en una extremidad que ha sido amputada.</div>
+    </div>
+
+    <div class="letter">I</div>
+
+    <div class="term">
+        Imagen corporal
+        <div class="definition">Percepción que tiene una persona de su propio cuerpo, que puede verse afectada tras una amputación.</div>
+    </div>
+
+    <div class="term">
+        Inclusión
+        <div class="definition">Proceso que asegura la participación plena de todas las personas.</div>
+    </div>
+
+    <div class="term">
+        Inclusión laboral
+        <div class="definition">Garantía de acceso al empleo en condiciones justas, con adaptaciones necesarias para personas con discapacidad.</div>
+    </div>
+
+    <div class="term">
+        Inclusión social
+        <div class="definition">Participación activa en la vida comunitaria.</div>
+    </div>
+
+    <div class="term">
+        Integración
+        <div class="definition">Proceso de incorporación de personas con discapacidad en entornos comunes, aunque no siempre implica adaptación del entorno.</div>
+    </div>
+
+    <div class="letter">M</div>
+
+    <div class="term">
+        Miembro residual
+        <div class="definition">Parte del cuerpo que permanece tras una amputación.</div>
+    </div>
+
+    <div class="term">
+        Movilidad reducida
+        <div class="definition">Condición que limita la capacidad de desplazamiento, temporal o permanentemente.</div>
+    </div>
+
+    <div class="term">
+        Modelo social de la discapacidad
+        <div class="definition">Enfoque que atribuye la discapacidad a barreras sociales.</div>
+    </div>
+
+    <div class="letter">O</div>
+
+    <div class="term">
+        Ortesis
+        <div class="definition">Dispositivo externo que apoya o corrige funciones del sistema musculoesquelético (por ejemplo, férulas).</div>
+    </div>
+
+    <div class="letter">P</div>
+
+    <div class="term">
+        Participación social
+        <div class="definition">Derecho y posibilidad de involucrarse activamente en la vida comunitaria.</div>
+    </div>
+
+    <div class="term">
+        Persona con discapacidad
+        <div class="definition">Enfoque centrado en la persona, que prioriza su dignidad por sobre su condición.</div>
+    </div>
+
+    <div class="term">
+        Prótesis
+        <div class="definition">Dispositivo artificial que reemplaza una parte del cuerpo.</div>
+    </div>
+
+    <div class="term">
+        Prótesis mioeléctrica
+        <div class="definition">Prótesis controlada mediante señales musculares.</div>
+    </div>
+
+    <div class="letter">R</div>
+
+    <div class="term">
+        Rehabilitación
+        <div class="definition">Proceso para recuperar o mejorar habilidades tras una lesión.</div>
+    </div>
+
+    <div class="term">
+        Rehabilitación protésica
+        <div class="definition">Entrenamiento específico para el uso adecuado de una prótesis.</div>
+    </div>
+
+    <div class="term">
+        Resiliencia
+        <div class="definition">Capacidad de adaptarse a situaciones adversas.</div>
+    </div>
+
+    <div class="letter">S</div>
+
+    <div class="term">
+        Sensibilización
+        <div class="definition">Proceso educativo orientado a generar conciencia y empatía respecto a la discapacidad.</div>
+    </div>
+
+    <div class="letter">T</div>
+
+    <div class="term">
+        Tecnología asistiva
+        <div class="definition">Dispositivos que ayudan a mejorar capacidades funcionales.</div>
+    </div>
+
+    <div class="term">
+        Tecnologías de apoyo
+        <div class="definition">Herramientas o dispositivos que permiten aumentar, mantener o mejorar las capacidades funcionales (ej: prótesis, sillas de ruedas, software accesible).</div>
+    </div>
+
+</div>
+
+<script>
+    const terms = document.querySelectorAll(".term");
+    const search = document.getElementById("search");
+
+    terms.forEach(term => {
+        term.addEventListener("click", () => {
+            const def = term.querySelector(".definition");
+            def.style.display = def.style.display === "block" ? "none" : "block";
+        });
+    });
+
+    search.addEventListener("keyup", () => {
+        const filter = search.value.toLowerCase();
+        terms.forEach(term => {
+            const text = term.textContent.toLowerCase();
+            term.style.display = text.includes(filter) ? "block" : "none";
+        });
+    });
+</script>
+
+<footer>
+    <p>© 2026 <strong>Fundación Positiva</strong> | Organización sin fines de lucro</p>
+    <p>Creado por <strong>© Código 404</strong></p>
+</footer>
+</body>
+</html>
