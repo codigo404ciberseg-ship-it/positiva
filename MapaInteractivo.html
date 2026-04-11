@@ -421,6 +421,8 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+  window.addEventListener("DOMContentLoaded", () => {
+
   // CONFIG FIREBASE
   const firebaseConfig = {
     apiKey: "AIzaSyDj5JqqrAtcsFANIofAFXM95WwZ5diEvPc",
@@ -438,88 +440,43 @@
   const map = L.map('map').setView([-33.45, -70.66], 4);
 
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap'
+    maxZoom: 19
   }).addTo(map);
 
   // ARREGLAR RENDER
-  window.onload = function () {
   setTimeout(() => {
     map.invalidateSize();
   }, 500);
-};
 
   // CARGAR DATOS
-  async function cargarMapa() {
-
-    const datos = [];
-
     const querySnapshot = await getDocs(collection(db, "personas"));
-    querySnapshot.forEach((doc) => {
-      datos.push(doc.data());
-    });
 
-    console.log("Datos cargados:", datos);
-
-    // CONTADOR
     document.getElementById("contadorPersonas").textContent =
-    "👥 Personas registradas: " + datos.length;
+      "👥 Personas registradas: " + querySnapshot.size;
 
-    // MARCADORES
-    for (let p of datos) {
+    for (const doc of querySnapshot.docs) {
 
-      console.log("Buscando ubicación:", p.localidad);
+      const p = doc.data();
 
-      let lat, lon;
-      
+      let lat = -35;
+      let lon = -71;
+
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${p.localidad}, Chile`);
         const data = await res.json();
 
-        console.log("Resultado Nominatim:", data);
-
         if (data.length > 0) {
           lat = data[0].lat;
           lon = data[0].lon;
-        } else {
-          throw "Sin resultados";
         }
-      } catch (error) {
-
-        console.warn("Fallback activado para:", p.localidad);
-
-        // FALLBACK (coordenadas básicas Chile)
-        if (p.localidad.toLowerCase().includes("santiago")) {
-          lat = -33.45;
-          lon = -70.66;
-        } else if (p.localidad.toLowerCase().icludes("valparaiso")) {
-          lat = -33.05;
-          lon = -71.62;
-        } else if (p.localidad.toLowerCase().includes("concepcion")) {
-          lat = -36.82;
-          lon = -73.05;
-        } else {
-          lat = -35.0; // centro de Chile
-          lon = -71.0;
-        }
+      } catch (e) {
+        console.log("Fallback usado");
       }
 
-      // CREAR MARCADOR
       L.marker([lat, lon]).addTo(map)
-       .bindPopup(`
-          <div style="text-align:center">
-            ${p.foto ? `<img src="${p.foto}" width="100" style="border-radius:8px;"><br>` : ""}
-            <b>${p.nombre} ${p.apellido}</b><br>
-            ${p.ocupacion || "Sin ocupación"}<br>
-            ${p.localidad}<br>
-            ${p.region}
-            </div>
-            `);
-        }
-  }
-
-  // EJECUTAR
-     cargarMapa();
+      .bindPoup(`<b>${p.nombre} ${p.apellido}</b><br>${p.localidad}`);
+    }
+  });
 </script>
 
 <footer>
