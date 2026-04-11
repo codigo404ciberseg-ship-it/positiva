@@ -119,7 +119,8 @@
   <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
- // FIREBASE CONFIG
+ 
+  // FIREBASE CONFIG
  const firebaseConfig = {
   apiKey: "AIzaSyDTxUtqXNOJnRaevn06x4VaBO_YSL32FNQ",
   authDomain: "fundacionpositiva-45a7c.firebaseapp.com",
@@ -129,7 +130,8 @@ import { getFirestore, collection, addDoc } from "https://www.gstatic.com/fireba
   appId: "1:991476563880:web:0f2c5d269f0da135f7279d",
  };
 
-  const app = initialzeApp(firebaseConfig);
+  // INICIAR FIREBASE
+  const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
   // Convertir imagen
@@ -142,7 +144,9 @@ import { getFirestore, collection, addDoc } from "https://www.gstatic.com/fireba
     });
   }
 
-  // Guardar en Firebase
+  // ESPERAR QUE CARGUE EL DOM
+document.addEventListener("DOMContentLoaded", () => {
+  
   document.getElementById("btnGuardar").addEventListener("click", async() => {
 
     const nombre = document.getElementById("nombre").value.trim();
@@ -180,6 +184,7 @@ import { getFirestore, collection, addDoc } from "https://www.gstatic.com/fireba
     }
 
     // Guardar en Firebase
+    try {
     await addDoc(collection(db, "personas"), {
       nombre,
       apellido,
@@ -193,11 +198,18 @@ import { getFirestore, collection, addDoc } from "https://www.gstatic.com/fireba
     });
 
     alert("Guardado en la nube ✔");
-
     limpiar();
+
+    } catch (error) {
+      console.error("Error Firebase:", error);
+      alert("Error al guardar en Firebase");
+    }
+    
   });
 
-  // Limpiar
+});
+
+  // Limpiar Form
   function limpiar() {
     document.getElementById("nombre").value = "";
     document.getElementById("apellido").value = "";
