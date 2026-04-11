@@ -828,19 +828,5 @@ window.addEventListener("resize", () => {
   canvas.height = window.innerHeight;
   });
 </script>
-
-<script>
-  let visitas = localStorage.getItem("visitas");
-
-  if (!visitas) {
-    visitas = 0;
-  }
-
-  visitas++;
-  localStorage.setItem("visitas", visitas);
-
-  document.getElementById("contadorVisitas").textContent =
-  "Visitas al sitio: " + visitas;
-</script>
 </body>
 </html>
