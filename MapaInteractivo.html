@@ -6,6 +6,9 @@
   <link rel="icon" type="image/png" href="favicon.png">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
   <style>
     body {
       background-image: url(01.png);
@@ -421,7 +424,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  window.addEventListener("DOMContentLoaded", () => {
+  async function iniciarApp() {
 
   // CONFIG FIREBASE
   const firebaseConfig = {
@@ -435,6 +438,12 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+
+  // ESPERAR A QUE LEAFLET EXISTA
+    if (typeof L === "undefined") {
+      console.error("Leaflet NO cargó");
+      return;
+    }
 
   // MAPA
   const map = L.map('map').setView([-33.45, -70.66], 4);
@@ -469,14 +478,16 @@
           lat = data[0].lat;
           lon = data[0].lon;
         }
-      } catch (e) {
-        console.log("Fallback usado");
-      }
+      } catch (e) {}
 
       L.marker([lat, lon]).addTo(map)
       .bindPoup(`<b>${p.nombre} ${p.apellido}</b><br>${p.localidad}`);
     }
-  });
+  }
+
+  // ARRANQUE SEGURO
+  window.onload = iniciarApp;
+  
 </script>
 
 <footer>
