@@ -457,33 +457,70 @@
     map.invalidateSize();
   }, 500);
 
+  // MARCADOR DE DATOS
+    L.marker([-33.45, -70.66]).addTo(map)
+    .bindPopup("Marcador de prueba")
+    .openPopup();
+
   // CARGAR DATOS
     const querySnapshot = await getDocs(collection(db, "personas"));
 
+    console.log("Documentos encontrados:", querySnapshot.size);
+
+    // CONTADOR
     document.getElementById("contadorPersonas").textContent =
       "👥 Personas registradas: " + querySnapshot.size;
 
+    // RECORRER DATOS
     for (const doc of querySnapshot.docs) {
 
       const p = doc.data();
+      console.log("Persona:", p);
 
-      let lat = -35;
-      let lon = -71;
+      let lat, lon;
 
+      // MODO PRO (si ya tienes coordenadas guardadas)
+      if (p.lat && p.lng) {
+        lat = p.lat;
+        lon = p.lng;
+      } else {
+
+      // FALLBACK CON NOMINATIM
       try {
+        console.log("Buscando:", p.localidad);
         const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${p.localidad}, Chile`);
         const data = await res.json();
+
+        console.log("Sin resultado:", data);
 
         if (data.length > 0) {
           lat = data[0].lat;
           lon = data[0].lon;
+        } else {
+          throw "Sin resultados";
         }
-      } catch (e) {}
+      } catch (error) {
 
-      L.marker([lat, lon]).addTo(map)
-      .bindPoup(`<b>${p.nombre} ${p.apellido}</b><br>${p.localidad}`);
+        console.warn("Usando coordenadas por defecto");
+
+      // CENTRO DE CHILE (fallback seguro)
+        lat = -35;
+        lon = -71;
+      }
     }
-  }
+      // CREAR MARCADOR REAL
+      L.marker([lat, lon]).addTo(map)
+      .bindPoup(`
+      <div style="text-align:center">
+      ${p.foto ? `<img src="${p.fofo}" width="100" style="border-radius:8px;"><br>` : ""}
+      <b>${p.nombre} ${p.apellido}</b><br>
+      ${p.ocupacion || "Sin ocupación"}<br>
+      ${p.localidad}<br>
+      ${p.region}
+      </div>
+    );
+ }
+}
 
   // ARRANQUE SEGURO
   window.onload = iniciarApp;
