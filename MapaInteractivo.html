@@ -421,65 +421,65 @@
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // CONFIG FIREBASE - IGUAL QUE LA DE ADMIN
-  const firebaseConfig = {
-    apiKey: "AIzaSyDTxUtqXNOJnRaevn06x4VaBO_YSL32FNQ",
-    authDomain: "fundacionpositiva-45a7c.firebaseapp.com",
-    projectId: "fundacionpositiva-45a7c",
-    storageBucket: "fundacionpositiva-45a7c.firebasestorage.app",
-    messagingSenderId: "991476563880",
-    appId: "1:991476563880:web:0f2c5d269f0da135f7279d",
-  };
+// 🔥 CONFIG
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_DOMINIO",
+  projectId: "TU_PROJECT_ID",
+};
 
-  // INICIAR FIREBASE
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  // MAPA
-  const map = L.map('map').setView([-33.45, -70.66], 4);
+// 🗺️ MAPA
+const map = L.map('map').setView([-33.45, -70.66], 4);
 
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19
-  }).addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19
+}).addTo(map);
 
-  // CONTADOR
-  const contador = document.getElementById("contadorPersonas");
+// 🟢 ARRAY DE MARCADORES
+let marcadores = [];
 
-  // TIEMPO REAL (CLAVE)
-  onSnapchot(collection(db, "personas"), (snapshot) => {
+// 🔥 TIEMPO REAL (CLAVE)
+onSnapshot(collection(db, "personas"), (snapshot) => {
 
-    // Limpiar mapa (evita duplicados)
-    map.eachLayer(Layer => {
-      if (layer instanceof L.Marker) {
-        map.removeLayer(layer);
-      }
-    });
+  // limpiar mapa
+  marcadores.forEach(m => map.removeLayer(m));
+  marcadores = [];
 
-    let total = 0;
+  let total = 0;
 
-    snapshot.forEach(doc => {
-      const p = doc.data();
-      total++;
+  snapshot.forEach((doc) => {
+    const p = doc.data();
+    total++;
 
-      if (p.lat && p.lng) {
-        L.marker([p.lat, p.lng]).addTo(map)
-        .bindPopup(`
+    if (p.lat && p.lng) {
+
+      const marker = L.marker([p.lat, p.lng]).addTo(map)
+      .bindPopup(`
         <div style="text-align:center">
-        $p.foto ? `<img src="${p.foto}" width="100" style="border-radius:8px;"><br>` : ""}
-        ${p.ocupacion || ""}<br>
-        ${p.localidad}<br>
-        ${p.region}
+          ${p.foto ? `<img src="${p.foto}" width="100"><br>` : ""}
+          <b>${p.nombre} ${p.apellido}</b><br>
+          ${p.ocupacion || ""}<br>
+          ${p.localidad}<br>
+          ${p.region}
         </div>
-        `);
-      }
-    });
+      `);
 
-    contador.textContent = "👥 Personas registradas: " + total;
-  });  
-</script>
+      marcadores.push(marker);
+    }
+  });
+
+  // contador
+  document.getElementById("contadorPersonas").textContent =
+    "👥 Personas registradas: " + total;
+
+});
+</script>  
 
 <footer>
   <p>© 2026 <strong>Fundación Positiva</strong> | Organización sin fines de lucro</p>
