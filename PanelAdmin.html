@@ -350,9 +350,7 @@ document.getElementById("btnGuardar").addEventListener("click", async () => {
       region,
       foto: fotoBase64
     };
-
-    datos.push(persona);
-
+    
     try {
       await addDoc(collection(db, "personas"), persona);
     } catch (e) {
@@ -364,8 +362,7 @@ document.getElementById("btnGuardar").addEventListener("click", async () => {
     alert("Datos guardados ✔");
 
     limpiar();
-    mostrarLista();
-
+    
   } catch (error) {
     console.error("Error general:", error);
     alert("Error al guardar");
@@ -406,7 +403,6 @@ function mostrarLista() {
 function eliminar(index) {
   if (confirm("¿Eliminar este registro?")) {
     datos.splice(index, 1);
-    localStorage.setItem("personas", JSON.stringify(datos));
     mostrarLista();
   }
 }
