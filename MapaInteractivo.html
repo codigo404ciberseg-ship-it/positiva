@@ -422,7 +422,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // 🔥 CONFIG
 const firebaseConfig = {
@@ -437,25 +437,29 @@ const db = getFirestore(app);
 // 🗺️ MAPA
 const map = L.map('map').setView([-33.45, -70.66], 4);
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png'.addTo(map);
+// ✅ CORREGIDO
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap'
+}).addTo(map);
 
 // CARGAR DATOS
-  async function cargar() {
-    const snapshot = await getDocs(collection(db, "personas"));
-    snapshot.forEach(doc => {
-      const p = doc.data();
+async function cargar() {
+  const snapshot = await getDocs(collection(db, "personas"));
 
-      console.log("DATOS:", p); // CLAVE
+  snapshot.forEach(doc => {
+    const p = doc.data();
 
-      if (p.lat && p.lng) {
-        L.marker([p.lat, p.lng])
+    console.log("DATOS:", p); // 👈 importante
+
+    if (p.lat && p.lng) {
+      L.marker([p.lat, p.lng])
         .addTo(map)
-        .bindPopup(p.nombre+ " " + p.apellido);
+        .bindPopup(p.nombre + " " + p.apellido);
+    }
+  });
+}
 
-      }
-});
-  }
-  cargar();
+cargar();
 </script>  
 
 <footer>
