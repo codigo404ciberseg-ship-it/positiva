@@ -192,7 +192,21 @@ document.addEventListener("DOMContentLoaded", () => {
         lng,
         fecha: new Date()
       });
+      
+     // GUARDAR TAMBIÉN LOCALMENTE
+      let datos = JSON.parse(localStorage.getItem("personas")) || [];
+      datos.push({
+        nombre,
+        apellido,
+        ocupacion,
+        localidad,
+        region
+      });
+      localStorage.setItem("personas", JSON.stringify(datos));
 
+      // ACTUALIZAR LISTA
+      mostrarLista();
+      
       alert("Guardado correctamente ✔");
 
       limpiar();
@@ -257,6 +271,8 @@ if (intento !== PASSWORD) {
   <div id="lista" class="card"></div>
 
 </div>
+
+  let datos = JSON.parse(localStorage.getItem("personas")) || [];
 
 <script>
 // 📦 DATOS
@@ -408,6 +424,8 @@ function mostrarLista() {
 function eliminar(index) {
   if (confirm("¿Eliminar este registro?")) {
     datos.splice(index, 1);
+    localStorage.setItem("personas", JSON.stringify(datos));
+    mostrarLista();
   }
 }
 
@@ -420,6 +438,8 @@ function limpiar() {
   document.getElementById("region").value = "";
   document.getElementById("foto").value = "";
 }
+  mostrarLista();
+  
 </script>
 
 </body>
